@@ -1,6 +1,7 @@
 package adventofcode
 
 import (
+	"fmt"
 	"math"
 	"regexp"
 	"strconv"
@@ -8,6 +9,10 @@ import (
 
 type point3D struct {
 	x, y, z int
+}
+
+func (p *point3D) String() string {
+	return fmt.Sprintf("<x=%3d, y=%3d, z=%3d>", p.x, p.y, p.z)
 }
 
 func newPoint3DFromString(s string) *point3D {

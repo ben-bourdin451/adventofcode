@@ -58,3 +58,20 @@ func Test_newPoint3DFromString(t *testing.T) {
 		})
 	}
 }
+
+func Test_point3D_String(t *testing.T) {
+	tests := []struct {
+		p    *point3D
+		want string
+	}{
+		{&point3D{1, 2, 3}, "<x=  1, y=  2, z=  3>"},
+		{&point3D{-10, -2, 13}, "<x=-10, y= -2, z= 13>"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.want, func(t *testing.T) {
+			if got := tt.p.String(); got != tt.want {
+				t.Errorf("point3D.String() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
