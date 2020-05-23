@@ -1,6 +1,59 @@
 package adventofcode
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type universe struct {
+	moons []*moon
+}
+
+func newUniverse(in []string) *universe {
+	u := &universe{[]*moon{}}
+	for _, s := range in {
+		u.moons = append(u.moons, &moon{newPoint3DFromString(s), &point3D{0, 0, 0}})
+	}
+	return u
+}
+
+func (u *universe) tick() {
+	// gravity
+	for i := 0; i < len(u.moons); i++ {
+		for j := i + 1; j < len(u.moons); j++ {
+			applyGravity(u.moons[i], u.moons[j])
+		}
+	}
+
+	// velocity
+	for _, m := range u.moons {
+		m.applyVelocity()
+	}
+}
+
+func (u *universe) print(s int) {
+	fmt.Println("After", s, "steps:")
+	for _, m := range u.moons {
+		fmt.Printf("pos=%v, vel=%v\n", m.pos, m.velocity)
+	}
+	fmt.Println()
+}
+
+func (u *universe) isApex() (bool, bool, bool) {
+	x, y, z := true, true, true
+	for _, m := range u.moons {
+		if m.velocity.x != 0 {
+			x = false
+		}
+		if m.velocity.y != 0 {
+			y = false
+		}
+		if m.velocity.z != 0 {
+			z = false
+		}
+	}
+
+	return x, y, z
+}
 
 type moon struct {
 	pos      *point3D
@@ -50,33 +103,14 @@ func applyGravity(m1, m2 *moon) {
 }
 
 func day12Part1(in []string, steps int) int {
-	moons := []*moon{}
-	for _, s := range in {
-		moons = append(moons, &moon{newPoint3DFromString(s), &point3D{0, 0, 0}})
-	}
+	u := newUniverse(in)
 
 	for step := 0; step < steps; step++ {
-		// fmt.Println("After", step, "steps:")
-		// for _, m := range moons {
-		// 	fmt.Println(m.String())
-		// }
-		// fmt.Println()
-
-		// gravity
-		for i := 0; i < len(moons); i++ {
-			for j := i + 1; j < len(moons); j++ {
-				applyGravity(moons[i], moons[j])
-			}
-		}
-
-		// velocity
-		for _, m := range moons {
-			m.applyVelocity()
-		}
+		u.tick()
 	}
 
 	total := 0
-	for _, m := range moons {
+	for _, m := range u.moons {
 		total += m.potentialEnergy() * m.kineticEnergy()
 	}
 
@@ -84,5 +118,28 @@ func day12Part1(in []string, steps int) int {
 }
 
 func day12Part2(in []string) int {
-	return 0
+	u := newUniverse(in)
+
+	steps := 0
+	x, y, z := 0, 0, 0
+	for x == 0 || y == 0 || z == 0 {
+		u.tick()
+		steps++
+
+		xapex, yapex, zapex := u.isApex()
+		if x == 0 && xapex {
+			x = steps * 2
+		}
+
+		if y == 0 && yapex {
+			y = steps * 2
+		}
+
+		if z == 0 && zapex {
+			z = steps * 2
+		}
+	}
+	fmt.Println("found cycles", x, y, z)
+
+	return lcmm([]int{x, y, z})
 }

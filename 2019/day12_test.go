@@ -7,6 +7,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var day12Input = []string{
+	"<x=14, y=4, z=5>",
+	"<x=12, y=10, z=8>",
+	"<x=1, y=7, z=-10>",
+	"<x=16, y=-5, z=3>",
+}
+
 func TestDay12Part1(t *testing.T) {
 	cases := []struct {
 		in    []string
@@ -44,15 +51,8 @@ func TestDay12Part1(t *testing.T) {
 }
 
 func TestDay12Part1Final(t *testing.T) {
-	in := []string{
-		"<x=14, y=4, z=5>",
-		"<x=12, y=10, z=8>",
-		"<x=1, y=7, z=-10>",
-		"<x=16, y=-5, z=3>",
-	}
-
-	got := day12Part1(in, 1000)
-	want := 0
+	got := day12Part1(day12Input, 1000)
+	want := 6423
 	fmt.Printf("Day 12, part 1 answer: %v\n", got)
 	if got != want {
 		t.Errorf("got %v, want %v", got, want)
@@ -66,9 +66,21 @@ func TestDay12Part2(t *testing.T) {
 	}{
 		{
 			[]string{
-				"",
+				"<x=-1, y=0, z=2>",
+				"<x=2, y=-10, z=-7>",
+				"<x=4, y=-8, z=8>",
+				"<x=3, y=5, z=-1>",
 			},
-			0,
+			2772,
+		},
+		{
+			[]string{
+				"<x=-8, y=-10, z=0>",
+				"<x=5, y=5, z=10>",
+				"<x=2, y=-7, z=3>",
+				"<x=9, y=-8, z=-3>",
+			},
+			4686774924,
 		},
 	}
 
@@ -81,13 +93,8 @@ func TestDay12Part2(t *testing.T) {
 }
 
 func TestDay12Part2Final(t *testing.T) {
-	in, err := readStrings("./day12_input.txt")
-	if err != nil {
-		t.Error("Error while reading input", err)
-	}
-
-	got := day12Part2(in)
-	want := 0
+	got := day12Part2(day12Input)
+	want := 327636285682704
 	if got != want {
 		t.Errorf("got %v, want %v", got, want)
 	}
