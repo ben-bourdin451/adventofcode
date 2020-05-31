@@ -40,10 +40,8 @@ func day13Part1(argv string) int64 {
 
 	a := arcade{}
 	in, done := make(chan int64, 1), make(chan bool, 1)
-	in <- 0 // send black as 1st input
 	a.start(mem, in, done)
-
-	<-done // wait for bot to be finished
+	<-done
 
 	return a.blockCount
 }
