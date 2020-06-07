@@ -39,7 +39,7 @@ func TestDay13Part1_blockCount(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		a := arcade{0}
+		a := newArcade(10)
 		for _, i := range c.in {
 			a.handleInstruction(i.p, i.tile)
 		}
