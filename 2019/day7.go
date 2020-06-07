@@ -12,7 +12,7 @@ type amp struct {
 
 func (a *amp) start(mem []int64, wg *sync.WaitGroup) {
 	go func() {
-		intcode(mem, a.in, a.out)
+		intcode(mem, a.in, a.out, nil)
 		wg.Done()
 	}()
 	a.in <- a.phase

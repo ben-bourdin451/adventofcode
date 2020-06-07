@@ -77,7 +77,7 @@ func (a *arcade) start(mem []int64) {
 	in, done := make(chan int64), make(chan bool, 1)
 	out := make(chan int64)
 
-	go intcodeWithDone(mem, in, out, done)
+	go intcode(mem, in, out, done)
 	for {
 		select {
 		case x := <-out:

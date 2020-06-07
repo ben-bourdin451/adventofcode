@@ -3,7 +3,7 @@ package adventofcode
 func day9Part1(argv string) []int64 {
 	memory := initCodes(argv)
 	in, out := make(chan int64, 1), make(chan int64)
-	go intcode(memory, in, out)
+	go intcode(memory, in, out, nil)
 	in <- 1
 	output := []int64{}
 	for o := range out {
@@ -17,7 +17,7 @@ func day9Part1(argv string) []int64 {
 func day9Part2(argv string) []int64 {
 	memory := initCodes(argv)
 	in, out := make(chan int64, 1), make(chan int64)
-	go intcode(memory, in, out)
+	go intcode(memory, in, out, nil)
 	in <- 2
 	output := []int64{}
 	for o := range out {

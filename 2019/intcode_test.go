@@ -104,7 +104,7 @@ func TestIntcode(t *testing.T) {
 
 	for k, c := range cases {
 		in, out := make(chan int64, 1), make(chan int64)
-		go intcode(c.mem, in, out)
+		go intcode(c.mem, in, out, nil)
 		in <- c.input
 		if output := <-out; output != c.want {
 			t.Errorf("%v got %v, want %v", k, output, c.want)

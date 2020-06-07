@@ -9,7 +9,7 @@ func day2Part1(argv string) int64 {
 	input := make(chan int64, 1)
 	defer close(input)
 	input <- 0
-	intcode(mem, input, nil)
+	intcode(mem, input, nil, nil)
 
 	return mem[0]
 }
@@ -27,7 +27,7 @@ func day2Part2(argv string) int64 {
 			reflect.Copy(reflect.ValueOf(cp), reflect.ValueOf(codes))
 			cp[1] = int64(n)
 			cp[2] = int64(v)
-			intcode(cp, input, nil)
+			intcode(cp, input, nil, nil)
 			if cp[0] == 19690720 {
 				return int64(n*100 + v)
 			}

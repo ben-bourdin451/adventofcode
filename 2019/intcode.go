@@ -7,13 +7,9 @@ import (
 	"strings"
 )
 
-func intcode(mem []int64, in <-chan int64, out chan<- int64) {
-	intcodeWithDone(mem, in, out, nil)
-}
-
 // Takes initial memory alongside input & output channels
 // Modifies memory (int64ended side effect, non-purity)
-func intcodeWithDone(mem []int64, in <-chan int64, out chan<- int64, done chan<- bool) {
+func intcode(mem []int64, in <-chan int64, out chan<- int64, done chan<- bool) {
 	if out != nil {
 		defer close(out)
 	}
