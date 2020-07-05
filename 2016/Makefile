@@ -1,17 +1,12 @@
-DAYS := $(wildcard day*/.)
-SOURCES := $(shell find . -type f -name "*.scala")
-TARGET := $(notdir $(CURDIR))
+YEAR := all $(notdir $(CURDIR))
+DAYS := $(wildcard day*)
 
-$(TARGET): $(SOURCES)
-	@scalac $(SOURCES)
-	@scala Main
-
-all: $(DAYS)
+$(YEAR): $(DAYS)
 $(DAYS):
-	$(MAKE) -C $@
+	@$(MAKE) -C $@
 
-clean: 
+clean:
 	@find . -type f -name "*.class" -delete
 
-.PHONY: all $(DAYS)
+.PHONY: $(DAYS) $(YEAR) clean
 
