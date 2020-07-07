@@ -6,10 +6,12 @@ fi
 ifile="day${1}_input.txt"
 tfile="day${1}_test.go"
 cfile="day${1}.go"
+mfile="day${1}.md"
 
 touch $ifile
+printf "# Day $1" > $mfile
 
-cat <<EOT >> $cfile
+cat <<EOT > $cfile
 package adventofcode
 
 func day$1Part1(in []string) int {
@@ -21,7 +23,7 @@ func day$1Part2(in []string) int {
 }
 EOT
 
-cat <<EOT >> $tfile
+cat <<EOT > $tfile
 package adventofcode
 
 import (
