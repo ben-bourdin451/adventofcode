@@ -139,7 +139,6 @@ func day12Part2(in []string) int {
 			z = steps * 2
 		}
 	}
-	fmt.Println("found cycles", x, y, z)
 
 	return lcmm([]int{x, y, z})
 }
