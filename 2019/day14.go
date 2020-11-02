@@ -22,9 +22,9 @@ type lab struct {
 	chemicals map[string]uint64
 }
 
-func newLab(r map[string]reaction) *lab {
+func newLab(r map[string]reaction, ore uint64) *lab {
 	c := map[string]uint64{
-		"ORE":  math.MaxUint64,
+		"ORE":  ore,
 		"FUEL": 0,
 	}
 	return &lab{
@@ -41,7 +41,7 @@ func day14Part1(in []string) int {
 		reactions[reaction.output.name] = reaction
 	}
 
-	l := newLab(reactions)
+	l := newLab(reactions, math.MaxUint64)
 
 	l.makeChemical(chemical{n: 1, name: "FUEL"})
 
