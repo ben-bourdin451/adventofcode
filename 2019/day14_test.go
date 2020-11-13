@@ -21,6 +21,7 @@ func TestDay14Part1(t *testing.T) {
 			},
 			31,
 		},
+
 		{
 			[]string{
 				"9 ORE => 2 A",
@@ -33,6 +34,7 @@ func TestDay14Part1(t *testing.T) {
 			},
 			165,
 		},
+
 		{
 			[]string{
 				"157 ORE => 5 NZVS",
@@ -47,6 +49,7 @@ func TestDay14Part1(t *testing.T) {
 			},
 			13312,
 		},
+
 		{
 			[]string{
 				"2 VPVL, 7 FWMGM, 2 CXFTF, 11 MNCFX => 1 STKFG",
@@ -64,6 +67,7 @@ func TestDay14Part1(t *testing.T) {
 			},
 			180697,
 		},
+
 		{
 			[]string{
 				"171 ORE => 8 CNZTR",
@@ -103,7 +107,7 @@ func TestDay14Part1Final(t *testing.T) {
 	}
 
 	got := day14Part1(in)
-	want := 0
+	want := 2486514
 	fmt.Printf("Day 14, part 1 answer: %v\n", got)
 	if got != want {
 		t.Errorf("got %v, want %v", got, want)
