@@ -63,7 +63,7 @@ func TestDay14Part1(t *testing.T) {
 				"145 ORE => 6 MNCFX",
 				"1 NVRVD => 8 CXFTF",
 				"1 VJHF, 6 MNCFX => 4 RFSQX",
-				"176 ORE => 6 VJHF				",
+				"176 ORE => 6 VJHF",
 			},
 			180697,
 		},
@@ -133,6 +133,7 @@ func TestDay14Part2(t *testing.T) {
 			},
 			82892753,
 		},
+
 		{
 			[]string{
 				"2 VPVL, 7 FWMGM, 2 CXFTF, 11 MNCFX => 1 STKFG",
@@ -150,6 +151,7 @@ func TestDay14Part2(t *testing.T) {
 			},
 			5586022,
 		},
+
 		{
 			[]string{
 				"171 ORE => 8 CNZTR",
@@ -189,7 +191,7 @@ func TestDay14Part2Final(t *testing.T) {
 	}
 
 	got := day14Part2(in)
-	want := 0
+	want := 998536
 	if got != want {
 		t.Errorf("got %v, want %v", got, want)
 	}

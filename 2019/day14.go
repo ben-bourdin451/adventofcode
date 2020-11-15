@@ -22,14 +22,10 @@ type lab struct {
 	chemicals map[string]uint64
 }
 
-func newLab(r map[string]reaction, ore uint64) *lab {
-	c := map[string]uint64{
-		"ORE":  ore,
-		"FUEL": 0,
-	}
+func newLab(r map[string]reaction) *lab {
 	return &lab{
 		reactions: r,
-		chemicals: c,
+		chemicals: make(map[string]uint64),
 	}
 }
 
@@ -40,46 +36,50 @@ func day14Part1(in []string) int {
 		reactions[reaction.output.name] = reaction
 	}
 
-	l := newLab(reactions, math.MaxUint64)
-	fuel := chemical{n: 1, name: "FUEL"}
+	l := newLab(reactions)
 
-	return int(l.makeChemicalRec(fuel))
+	return int(l.makeChemical(chemical{name: "FUEL", n: 1}))
 }
 
-func (l *lab) multiplyChems(m uint64) {
-	for k := range l.chemicals {
-		if k != "ORE" {
-			l.chemicals[k] *= m
-		}
-	}
-}
+// Recursive function doesn't work with batches as we need breadth first resolution not depth first
+// Order in which the reactions are done matters due to how leftovers are generated & used
+// Recursive function without batches does work however is very innefficient
+func (l *lab) makeChemicalRec(r reaction, batches uint64) uint64 {
+	ore := uint64(0)
 
-func (l *lab) makeChemicalRec(c chemical) uint64 {
-	ore := l.chemicals["ORE"]
-
-	reaction := l.reactions[c.name]
-	for _, chem := range reaction.input {
-		// create as many as required based on leftovers
-		for n := l.chemicals[chem.name]; n < chem.n; n = l.chemicals[chem.name] {
-			l.makeChemicalRec(chemical{chem.n, chem.name})
+	for _, chem := range r.input {
+		need := chem.n * batches
+		if left, ok := l.chemicals[chem.name]; ok && left >= need {
+			if chem.name == "ORE" {
+				ore += need
+			}
+			l.chemicals[chem.name] -= need
+			continue
 		}
 
-		// use chem in reaction
-		l.chemicals[chem.name] -= chem.n
+		want := l.reactions[chem.name]
+		amount := need - l.chemicals[chem.name]
+		b := uint64(math.Ceil(float64(amount) / float64(want.output.n)))
+
+		if chem.name != "ORE" {
+			ore += l.makeChemicalRec(want, b)
+		}
+
+		// use what we need
+		l.chemicals[chem.name] -= amount
 	}
 
-	// produce output of reaction, i.e. original input
-	l.chemicals[c.name] += reaction.output.n
+	// produce output of reaction
+	l.chemicals[r.output.name] += r.output.n * batches
 
-	return ore - l.chemicals["ORE"]
+	return ore
 }
 
-func (l *lab) makeChemicalProc(chem chemical) uint64 {
-	q := []chemical{chem}
-
+func (l *lab) makeChemical(chem chemical) uint64 {
 	oreUsed := uint64(0)
 	leftovers := make(map[string]uint64)
 
+	q := []chemical{chem}
 	for len(q) > 0 {
 		// pop chem to create
 		c := q[0]
@@ -88,7 +88,7 @@ func (l *lab) makeChemicalProc(chem chemical) uint64 {
 		if c.name == "ORE" {
 			oreUsed += c.n
 
-		} else if left, ok := leftovers[c.name]; ok && left >= c.n {
+		} else if left, ok := leftovers[c.name]; ok && c.n <= left {
 			leftovers[c.name] -= c.n
 
 		} else {
@@ -99,7 +99,7 @@ func (l *lab) makeChemicalProc(chem chemical) uint64 {
 				q = append(q, chemical{name: in.name, n: m * in.n})
 			}
 
-			leftovers[c.name] += m*r.output.n - need
+			leftovers[c.name] = m*r.output.n - need
 		}
 	}
 
@@ -113,29 +113,26 @@ func day14Part2(in []string) int {
 		reactions[reaction.output.name] = reaction
 	}
 
-	l := newLab(reactions, math.MaxUint64)
-	fuel := chemical{name: "FUEL", n: 1}
+	l := newLab(reactions)
 
-	// make 1 fuel
-	oreUsed := l.makeChemicalRec(fuel)
+	// make 1 fuel to have initial estimate
+	oreUsed := l.makeChemical(chemical{name: "FUEL", n: 1})
 
-	// copy leftovers
-	leftovers := make(map[string]uint64)
-	for k, v := range l.chemicals {
-		leftovers[k] = v
+	// binary search
+	low := math.Floor(float64(1e12 / oreUsed))
+	upper := low * low
+	for upper-low > 1 {
+		guess := math.Floor((upper + low) / 2)
+		if used := l.makeChemical(chemical{name: "FUEL", n: uint64(guess)}); used > 1e12 {
+			upper = guess
+		} else if used < 1e12 {
+			low = guess
+		} else {
+			return int(guess)
+		}
 	}
 
-	// calculate ore & leftovers to almost make 1e12
-	q := uint64(math.Floor(float64(1e12 / oreUsed)))
-	l.multiplyChems(q)
-
-	total := oreUsed * q
-	for total < 1e12 {
-		used := l.makeChemicalRec(fuel)
-		total += used
-	}
-
-	return int(l.chemicals["FUEL"] - 1)
+	return int(low)
 }
 
 func parseReaction(r string) reaction {
