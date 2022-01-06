@@ -2,6 +2,7 @@ TOPTARGETS := all clean
 YEARS := $(wildcard 2016)
 
 $(TOPTARGETS): $(YEARS)
+
 $(YEARS):
 	@$(MAKE) -C $@ $(MAKECMDGOALS)
 
