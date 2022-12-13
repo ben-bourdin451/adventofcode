@@ -4,6 +4,7 @@ import * as day3 from './src/day3';
 import * as day4 from './src/day4';
 import * as day5 from './src/day5';
 import * as day6 from './src/day6';
+import * as day7 from './src/day7';
 
 console.log("------------------------------");
 console.log("Advent of Code 2022");
@@ -14,3 +15,4 @@ day3.answers();
 day4.answers();
 day5.answers();
 day6.answers();
+day7.answers();
