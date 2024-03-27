@@ -6,3 +6,7 @@
 # scala/java
 *.class
 .metals/
+
+# Added by cargo
+
+/target
