@@ -2,6 +2,7 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
+mod day5;
 
 use std::fs;
 
@@ -21,6 +22,10 @@ fn main() {
     let day4 = &read_to_string("day4_input.txt");
     println!("Day 4 - Part 1 {}", day4::part1(day4));
     println!("Day 4 - Part 2 {}", day4::part2(day4));
+
+    let day5 = &read_to_string("day5_input.txt");
+    println!("Day 5 - Part 1 {}", day5::part1(day5));
+    println!("Day 5 - Part 2 {}", day5::part2(day5));
 }
 
 // read file and return a vector of strings
