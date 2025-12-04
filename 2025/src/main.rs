@@ -4,6 +4,7 @@ use std::fs;
 
 mod day1;
 mod day2;
+mod day3;
 
 fn main() {
     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
@@ -13,14 +14,21 @@ fn main() {
         "Day 1  - \tPart 1: {}\t\tPart 2: {}",
         day1::part1(day1),
         day1::part2(day1)
-    ); // 992, 6133
+    );
 
     let day2 = &read_to_string("day2.txt");
     info!(
         "Day 2  - \tPart 1: {}\tPart 2: {}",
         day2::part1(&day2.first().unwrap()),
         day2::part2(&day2.first().unwrap())
-    ); // 0, 0
+    );
+
+    let day3 = &read_to_string("day3.txt");
+    info!(
+        "Day 3  - \tPart 1: {}\tPart 2: {}",
+        day3::part1(day3),
+        day3::part2(day3)
+    );
 }
 
 // read file and return a vector of strings
