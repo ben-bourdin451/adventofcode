@@ -1,13 +1,14 @@
-use env_logger::Env;
 use log::info;
 use std::fs;
 
 mod day1;
 mod day2;
 mod day3;
+mod day4;
+mod logging;
 
 fn main() {
-    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
+    logging::init_logging();
 
     let day1 = &read_to_string("day1.txt");
     info!(
@@ -28,6 +29,13 @@ fn main() {
         "Day 3  - \tPart 1: {}\tPart 2: {}",
         day3::part1(day3),
         day3::part2(day3)
+    );
+
+    let day4 = &read_to_string("day4.txt");
+    info!(
+        "Day 4  - \tPart 1: {}\tPart 2: {}",
+        day4::part1(day4),
+        day4::part2(day4)
     );
 }
 
